@@ -3,18 +3,15 @@ Con esta API vamos a manejar los Detalles de la factura
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using WebServices.Models;
 
 namespace WebServices.Controllers
 {
-    
+
     public class DetalleController : ApiController
     {
-        
+
         //obtenemos el desgloce del detalle de una factura ingresando el número de factura
         // GET api/values/5
         [HttpGet]
@@ -26,7 +23,7 @@ namespace WebServices.Controllers
             return tabla;
         }
 
-        //agregamos un nuevo detalle a una factura
+        //Se agrega un nuevo detalle a una factura
         [HttpPost]
         public IHttpActionResult Post_Adicionar(EntidadesBasedeDatos datos)
         {
@@ -42,6 +39,28 @@ namespace WebServices.Controllers
 
         }
 
+        // Se elimina una entidad, necesita confirmación true/false
+        [HttpPost]
+        public IHttpActionResult Post_Eliminar(EntidadesBasedeDatos datos, Boolean confirma)
+        {
+            if (confirma)
+            {
+                Funciones Fun = new Funciones();
+                EntidadesBasedeDatos dat = new EntidadesBasedeDatos();
+                dat.Nofactura = datos.Nofactura;
+                dat.Detalleproducto = datos.Detalleproducto;
+                dat.Precio = datos.Precio;
+                dat.Cantidad = datos.Cantidad;
+                dat.Subtotal = datos.Subtotal;
+                string respuesta = Fun.borrar_detalle(dat);
+                return Ok("elimado");
+            }
+            else
+            {
+                return Ok("no eliminado");
+
+            }
+        }
 
 
     }

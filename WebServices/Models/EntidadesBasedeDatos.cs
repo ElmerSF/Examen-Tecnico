@@ -1,10 +1,8 @@
 ﻿/*
  * En esta clase se esta haciendo un espejo de la base de datos, para almacenar los datos de intercambio
+ * Además de variables necesarias para formato de los datos
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace WebServices.Models
 {
@@ -22,5 +20,23 @@ namespace WebServices.Models
         public DateTime Fecha { get; set; }
         public String Nombre { get; set; }
         public int Totalfactura { get; set; }
+    }
+    public class CambioMaestro //para el cambio de nombre llenamos esta entidad
+    {
+        public string NombreNuevo { get; set; }
+        public int IDfactura { get; set; }
+    }
+
+    public class Cadena_texto //tomamos una entidad y le damos formato para llenar un arreglo
+
+    {
+        public string Convertir(Maestro maestro) //metodo para dar formato
+        {
+            //convertimos la entidad Maestro en una cadena Json
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(maestro);
+            return json;
+        }
+
+
     }
 }

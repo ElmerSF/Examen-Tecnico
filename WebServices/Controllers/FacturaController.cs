@@ -3,11 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using WebServices.Models;
+
 
 namespace WebServices.Controllers
 {
@@ -16,11 +14,21 @@ namespace WebServices.Controllers
 
         //obtenemos el último id de registro de factura el consecutivo
         [HttpGet]
-        public string Get_NFactura()
+        public string Get_NFactura(string consecutivo)
         {
             Funciones Fun = new Funciones();
-            string consecutivo = Fun.Consecutivo();
+            consecutivo = Fun.Consecutivo();
             return consecutivo;
+        }
+
+        //obtenemos todas las facturas ingresadas
+        [HttpGet]
+        public string[] Get_Toda_Factura()
+        {
+            Funciones Fun = new Funciones();
+            string[] Tabla;
+            Tabla = Fun.TablaMaestro();
+            return Tabla;
         }
 
         //obtenemos el Maestro el encabezado de la factura segun el ID
@@ -33,6 +41,7 @@ namespace WebServices.Controllers
             return tabla;
         }
 
+        //Guardamos un nuevo encabezado de factura Maestro
         [HttpPost]
         public IHttpActionResult Post_Guardar(Maestro nuevo_maestro)
         {
@@ -45,5 +54,26 @@ namespace WebServices.Controllers
             Fun.Guardar_factura(maestro);
             return Ok("realizado con éxito");
         }
+
+        //modificar el nombre de una Factura Maestro necestia confirmación true/false
+        [HttpPost]
+        public IHttpActionResult Post_CambiarNombre(CambioMaestro registro, Boolean confirma)
+        {
+            if (confirma)
+            {
+                Funciones Fun = new Funciones();
+                CambioMaestro cambio = new CambioMaestro();
+                cambio.NombreNuevo = registro.NombreNuevo;
+                cambio.IDfactura = registro.IDfactura;
+                Fun.Cambiar_cliente(cambio);
+                return Ok("Actualización realizada con éxito");
+            }
+            else
+            {
+                return Ok("No se realizó la modificación");
+            }
+
+        }
+
     }
 }
