@@ -48,10 +48,10 @@ namespace WebServices.Controllers
 
                 return consecutivo;
             }
-            catch
+            catch (Exception ex)
             {
 
-                consecutivo = "FAllO";
+                consecutivo = "FAllO" +ex;
                 return consecutivo;
 
             }
@@ -71,42 +71,51 @@ namespace WebServices.Controllers
         {
             //se crea una nueva tabla del tipo Entidadesbase de datos
             List<EntidadesBasedeDatos> tabla = new List<EntidadesBasedeDatos>();
-
-
-            SqlConnection conectar;
-            SqlCommand orden = new SqlCommand();
-            conectar = new SqlConnection(Claveconexion);
-            SqlDataReader leerDatos;
-            String comando_baseDatos = " select factura, descripcion, precio, cantidad, subtotal from detallado where factura =" + indice;
-
-            orden.CommandType = CommandType.Text;
-            orden.CommandText = comando_baseDatos;
-            orden.Connection = conectar;
-            conectar.Open();
-            leerDatos = orden.ExecuteReader();
-
-            //llenar el listado si hay celdas
-            if (leerDatos.HasRows)
+            try
             {
-                while (leerDatos.Read()) //mientras haya lectura
+                
+                SqlConnection conectar;
+                SqlCommand orden = new SqlCommand();
+                conectar = new SqlConnection(Claveconexion);
+                SqlDataReader leerDatos;
+                String comando_baseDatos = " select factura, descripcion, precio, cantidad, subtotal from detallado where factura =" + indice;
+
+                orden.CommandType = CommandType.Text;
+                orden.CommandText = comando_baseDatos;
+                orden.Connection = conectar;
+                conectar.Open();
+                leerDatos = orden.ExecuteReader();
+
+                //llenar el listado si hay celdas
+                if (leerDatos.HasRows)
                 {
-                    tabla.Add(new EntidadesBasedeDatos //llena la tablaCategoría con la lectura
+                    while (leerDatos.Read()) //mientras haya lectura
                     {
-                        Nofactura = Convert.ToInt32(leerDatos.GetInt32(0)),
-                        Detalleproducto = leerDatos.GetString(1),
-                        Precio = Convert.ToInt32(leerDatos.GetInt32(2)),
-                        Cantidad = Convert.ToInt32(leerDatos.GetInt32(3)),
-                        Subtotal = Convert.ToInt32(leerDatos.GetInt32(4))
+                        tabla.Add(new EntidadesBasedeDatos //llena la tablaCategoría con la lectura
+                        {
+                            Nofactura = Convert.ToInt32(leerDatos.GetInt32(0)),
+                            Detalleproducto = leerDatos.GetString(1),
+                            Precio = Convert.ToInt32(leerDatos.GetInt32(2)),
+                            Cantidad = Convert.ToInt32(leerDatos.GetInt32(3)),
+                            Subtotal = Convert.ToInt32(leerDatos.GetInt32(4))
 
 
-                    }); ;
+                        }); ;
 
 
+                    }
                 }
+                orden.Dispose();
+                conectar.Close();
+                return tabla;
             }
-            orden.Dispose();
-            conectar.Close();
-            return tabla;
+            catch (Exception)
+            
+            {
+                return tabla;
+
+            }
+            
         }
 
 
@@ -120,40 +129,49 @@ namespace WebServices.Controllers
             //se crea una nueva tabla del tipo maestro
             List<Maestro> tabla = new List<Maestro>();
 
-
-            SqlConnection conectar;
-            SqlCommand orden = new SqlCommand();
-            conectar = new SqlConnection(Claveconexion);
-            SqlDataReader leerDatos;
-
-            //se le envia la seleccion a la base de datos ingresando el parametro de índice
-            String comando_baseDatos = "select id_factura, fecha, nombre, total from Factura where id_factura = " + indice;
-
-            orden.CommandType = CommandType.Text;
-            orden.CommandText = comando_baseDatos;
-            orden.Connection = conectar;
-            conectar.Open();
-            leerDatos = orden.ExecuteReader();
-
-            //llenar el listado si hay celdas
-            if (leerDatos.HasRows)
+            try
             {
-                while (leerDatos.Read()) //mientras haya lectura
+                SqlConnection conectar;
+                SqlCommand orden = new SqlCommand();
+                conectar = new SqlConnection(Claveconexion);
+                SqlDataReader leerDatos;
+
+                //se le envia la seleccion a la base de datos ingresando el parametro de índice
+                String comando_baseDatos = "select id_factura, fecha, nombre, total from Factura where id_factura = " + indice;
+
+                orden.CommandType = CommandType.Text;
+                orden.CommandText = comando_baseDatos;
+                orden.Connection = conectar;
+                conectar.Open();
+                leerDatos = orden.ExecuteReader();
+
+                //llenar el listado si hay celdas
+                if (leerDatos.HasRows)
                 {
-                    tabla.Add(new Maestro //llena la tablaCategoría con la lectura
+                    while (leerDatos.Read()) //mientras haya lectura
                     {
-                        Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
-                        Fecha = Convert.ToDateTime(leerDatos[1]),
-                        Nombre = leerDatos.GetString(2),
-                        Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3)),
+                        tabla.Add(new Maestro //llena la tablaCategoría con la lectura
+                        {
+                            Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
+                            Fecha = Convert.ToDateTime(leerDatos[1]),
+                            Nombre = leerDatos.GetString(2),
+                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3)),
 
-                    }); ;
+                        }); ;
 
+                    }
                 }
+                orden.Dispose();
+                conectar.Close();
+                return tabla;
             }
-            orden.Dispose();
-            conectar.Close();
-            return tabla;
+            catch (Exception)
+            {
+                return tabla;
+
+            }
+
+           
         }
 
 
@@ -161,12 +179,13 @@ namespace WebServices.Controllers
 
         #region Guardar un detalle
 
-        public String Guardar_detalle(EntidadesBasedeDatos nuevo_registro)
+        public String Guardar_detalle(EntidadesBasedeDatos nuevo_registro) //se guarda un nuevo registro de detalle en una factura
         {
             Boolean confirmacion;
             String cadena = "se guardo registro";
             try
             {
+                //se envia el parametro a la base de datos
                 String parametro = "insert into detallado (factura, descripcion, precio, cantidad, subtotal) values (@factura, @descripcion, @precio, @cantidad, @subtotal)";
                 SqlConnection conectar;
                 SqlCommand orden = new SqlCommand();
@@ -204,5 +223,48 @@ namespace WebServices.Controllers
         }
 
         #endregion
+
+        #region Guardar factura
+
+        public String Guardar_factura(Maestro nuevo_maestro) //se guarda una nuevo encabezado de factura MAESTRO
+        {
+            Boolean confirmacion;
+            String cadena = "";
+            try
+            {
+                //se envia el parametro a la base de datos
+                String parametro = "insert into Factura (nombre, fecha, total) values (@nombre, @fecha, @total)";
+                SqlConnection conectar;
+                SqlCommand orden = new SqlCommand();
+                conectar = new SqlConnection(claveconexion);
+
+                orden.CommandType = CommandType.Text;
+                orden.CommandText = parametro;
+                orden.Connection = conectar;
+                conectar.Open();
+
+                //parametrizacion de los datos hacia la base de datos
+                orden.Parameters.AddWithValue("@nombre", nuevo_maestro.Nombre);
+                orden.Parameters.AddWithValue("@fecha", nuevo_maestro.Fecha);
+                orden.Parameters.AddWithValue("@total", nuevo_maestro.Totalfactura);
+
+                confirmacion = orden.ExecuteNonQuery() > 0;
+                if (confirmacion)
+                {
+                    cadena = "Factura almacenado correctamente";
+                }
+
+            }
+            catch (Exception problema)
+            {
+                
+                cadena = "no se pudo guardar la factura"+problema;
+            }
+
+            return cadena;
+        }
+
+        #endregion
+
     }
 }
