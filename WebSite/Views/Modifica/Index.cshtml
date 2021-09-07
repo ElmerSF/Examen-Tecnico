@@ -1,0 +1,39 @@
+﻿
+@model WebSite.Models.CambioMaestro
+@{
+    ViewBag.Title = "Modifica";
+    
+}
+<div class="jumbotron">
+    <h1>Modifica El Maestro de Factura </h1>
+    <h2>Permite cambiar el cliente de una Factura</h2>
+    <p>Al presionar Actualizar se cambia el nombre del cliente a la factura indicada</p>
+    <p>
+        <a id="consulta" href="./Consulta" class="btn btn-primary btn-lg">Regresar a Consulta Maestro &raquo;</a>
+        <a id="modifica" href="https://localhost:44335/Modifica" class="btn btn-primary btn-lg">Actualizar Factura &raquo;</a>
+
+    </p>
+</div>
+<div>
+    <p>Se puede modificar el nombre de un cliente ingresando el número de factura y el nuevo nombre </p>
+</div>
+@using (Html.BeginForm("Create", "Modifica", FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group">
+            <div>@Html.LabelFor(x => x.IDfactura)</div>
+            <div>@Html.TextBoxFor(x => x.IDfactura)</div> 
+            <div>@Html.LabelFor(x => x.NombreNuevo)</div> 
+            <div>@Html.TextBoxFor(x => x.NombreNuevo)</div> 
+         </div>
+        <div class="form-group">
+            <input type="submit" typeof="Modificar Cliente" />
+           
+        </div>
+    </div>
+    <div class="alert-info">
+        @ViewBag.Message
+    </div>
+}
+
+

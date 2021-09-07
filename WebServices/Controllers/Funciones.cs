@@ -375,7 +375,7 @@ namespace WebServices.Controllers
 
         #region Cambiar el nombre de un cliente
 
-        public String Cambiar_cliente(CambioMaestro modificacion) //se guarda una nuevo encabezado de factura MAESTRO
+        public string Cambiar_cliente(CambioMaestro modificacion) //se guarda una nuevo encabezado de factura MAESTRO
         {
             Boolean confirmacion;
             String cadena = "";
@@ -396,14 +396,18 @@ namespace WebServices.Controllers
                 confirmacion = orden.ExecuteNonQuery() > 0;
                 if (confirmacion)
                 {
-                    cadena = "Nombre de cliente corregido";
+                    cadena = "Nombre de cliente Actualizado correctamente";
+                }
+                else
+                {
+                    cadena = "No se pudo realizar la modificacion en la Base de Datos";
                 }
 
             }
             catch (Exception problema)
             {
 
-                cadena = "no se pudo realizar el cambio" + problema;
+                cadena = "La base de Datos dice no se pudo realizar el cambio" + problema;
             }
 
             return cadena;

@@ -65,12 +65,13 @@ namespace WebServices.Controllers
                 CambioMaestro cambio = new CambioMaestro();
                 cambio.NombreNuevo = registro.NombreNuevo;
                 cambio.IDfactura = registro.IDfactura;
-                Fun.Cambiar_cliente(cambio);
-                return Ok("Actualización realizada con éxito");
+                string mensaje_accion;
+                mensaje_accion= Fun.Cambiar_cliente(cambio);
+                return Ok(mensaje_accion);
             }
             else
             {
-                return Ok("No se realizó la modificación");
+                return Ok("La api responde: No se realizó la modificación");
             }
 
         }

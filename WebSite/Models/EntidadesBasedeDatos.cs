@@ -24,4 +24,9 @@ namespace WebSite.Models
         public string Nombre { get; set; }
         public int Totalfactura { get; set; }
     }
+    public class CambioMaestro //para el cambio de nombre llenamos esta entidad
+    {
+        public string NombreNuevo { get; set; }
+        public int IDfactura { get; set; }
+    }
 }
