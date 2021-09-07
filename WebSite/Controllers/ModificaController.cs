@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*En esta clase se tiene el controlador de la pagina llamada modifica que es donde se maneja
+ * la página para cambio de nombre de una factura en específico
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +10,7 @@ using WebSite.Models;
 
 namespace WebSite.Controllers
 {
+    //genera la vista inicial 
     public class ModificaController : Controller
     {
         // GET: Modifica
@@ -18,6 +22,7 @@ namespace WebSite.Controllers
         
 
         // POST: Modifica/Create
+        //Este método conecta con la API pero para ello primero Serializa la solicitud en un Json
         [HttpPost]
         public ActionResult Create(CambioMaestro encabezado)
         {
@@ -25,14 +30,21 @@ namespace WebSite.Controllers
             {
                 
                 ConexionAPI coman = new ConexionAPI();
+
+                //parametro de la API que vamos a utilizar del proyecto Webservices
                 string direccion = "https://localhost:44333/api/Factura?confirma=true";
+
                 string mensaje;
-                    mensaje =coman.Send<CambioMaestro>(direccion, encabezado, "POST");
-                // TODO: Add insert logic here
+
+                //le mandamos el paquete a serializar
+                mensaje =coman.Send<CambioMaestro>(direccion, encabezado, "POST");
                 
+                //este mensaje proviene de la consulta realizada a la base de datos
                 ViewBag.Message = mensaje;
+
+                //se mantiene en esta vista
                 return View("Index");
-                //return RedirectToAction("Index");
+                
             }
             catch
             {

@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*En esta clase es donde pasa la magia, cada una de las solicitudes se serializan y se obtiene un Json
+ * esta agrupado por regiones para mayor facilidad
+ * */
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,9 +13,12 @@ namespace WebSite.Models
 {
     public class ConexionAPI
     {
+
+        #region SERIALIZAR un POST
+        //metodo para serializar la petición 
         public string Send<aserializar>(string parametro, aserializar entidad, string method = "POST")
         {
-            string resultado = "Operación exitosa Se modifico el cliente de la factura indicada";
+            string resultado = "No respuesta";
 
             try
             {
@@ -25,9 +31,8 @@ namespace WebSite.Models
                 WebRequest request = WebRequest.Create(parametro);
 
                 request.Method = method;
-                // request.PreAuthenticate = true;
                 request.ContentType = "application/json;charset=utf-8'";
-                //request.Timeout = 10000; 
+                
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
@@ -52,5 +57,45 @@ namespace WebSite.Models
 
             return resultado;
         }
+
+        #endregion
+
+        #region obtener todas las facturas
+        public string Recibir(string parametro, int numero, string method = "GET")
+        {
+            string resultado;
+
+            try
+            {
+                JavaScriptSerializer js = new JavaScriptSerializer();
+
+                //serializamos el objeto
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(numero);
+
+                //peticion
+                WebRequest request = WebRequest.Create(parametro);
+
+                request.Method = method;
+                request.ContentType = "application/json;charset=utf-8'";
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                      
+                         
+                    resultado = streamReader.ReadToEnd().Trim();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                resultado = e.Message;
+
+            }
+
+            return resultado;
+        }
+        #endregion
     }
 }
