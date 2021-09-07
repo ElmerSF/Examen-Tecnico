@@ -9,7 +9,7 @@ namespace WebServices.Models
     public class EntidadesBasedeDatos //estos son las columnas de la tabla detalle de la Base de Datos
     {
         public int Nofactura { get; set; }
-        public String Detalleproducto { get; set; }
+        public string Detalleproducto { get; set; }
         public int Precio { get; set; }
         public int Cantidad { get; set; }
         public int Subtotal { get; set; }
@@ -18,7 +18,7 @@ namespace WebServices.Models
     {
         public int Fatura { get; set; }
         public DateTime Fecha { get; set; }
-        public String Nombre { get; set; }
+        public string Nombre { get; set; }
         public int Totalfactura { get; set; }
     }
     public class CambioMaestro //para el cambio de nombre llenamos esta entidad
