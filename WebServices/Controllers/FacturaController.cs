@@ -23,12 +23,12 @@ namespace WebServices.Controllers
 
         //obtenemos todas las facturas ingresadas
         [HttpGet]
-        public string[] Get_Toda_Factura()
+        public List<Maestro> Get_Toda_Factura()
         {
             Funciones Fun = new Funciones();
-            string[] Tabla;
-            Tabla = Fun.TablaMaestro();
-            return Tabla;
+            List<Maestro> lst = new List<Maestro>();
+            lst = Fun.TablaMaestro();
+            return lst;
         }
 
         //obtenemos el Maestro el encabezado de la factura segun el ID

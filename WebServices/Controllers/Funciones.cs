@@ -65,62 +65,51 @@ namespace WebServices.Controllers
         #endregion
 
         #region Mostrar todas las facturas Maestro
-        public string[] TablaMaestro() //se envia consulta para obtner todas las facturas
-
-        {
-            int limite = Convert.ToInt32(Consecutivo());
-            string[] arreglo;
-            arreglo = new string[limite];
-            int inicio = 3;
-
-            Cadena_texto texto = new Cadena_texto();
-
-            do
+        public List<Maestro> TablaMaestro() //se envia consulta para obtner todas las facturas
+         {
+            List<Maestro> lst = new List<Maestro>();
+            try
             {
-                try
+                SqlConnection conectar;
+                SqlCommand orden = new SqlCommand();
+                conectar = new SqlConnection(claveconexion); //le pasamos la ruta 
+                SqlDataReader leerDatos; // variable para lectura
+                                         //cadena coon el comnando para la base de datos
+                String comando_baseDatos = "select id_factura, fecha, nombre, total from Factura";
+
+                //definir los parametros y ejecucion a la base datos
+                orden.CommandType = CommandType.Text;
+                orden.CommandText = comando_baseDatos;
+                orden.Connection = conectar;
+                conectar.Open();
+                
+                leerDatos = orden.ExecuteReader(); // datos que devuelve la consulta en base datos
+                
+
+                if (leerDatos.HasRows)
                 {
-
-                    SqlConnection conectar;
-                    SqlCommand orden = new SqlCommand();
-                    conectar = new SqlConnection(claveconexion); //le pasamos la ruta 
-                    SqlDataReader leerDatos; // variable para lectura
-                                             //cadena coon el comnando para la base de datos
-                    String comando_baseDatos = "select id_factura, nombre, total from Factura where id_factura = " + inicio;
-
-                    //definir los parametros y ejecucion a la base datos
-                    orden.CommandType = CommandType.Text;
-                    orden.CommandText = comando_baseDatos;
-                    orden.Connection = conectar;
-                    conectar.Open();
-                    leerDatos = orden.ExecuteReader(); // datos que devuelve la consulta en base datos
-
-                    //llenar el listado si hay celdas
-                    if (leerDatos.HasRows)
+                    while (leerDatos.Read()) //mientras haya lectura
                     {
-                        while (leerDatos.Read()) //mientras haya lectura
+                        lst.Add(new Maestro //llena la tablaCategoría con la lectura
                         {
-                            Maestro mas = new Maestro();
-                            {
-                                mas.Fatura = Convert.ToInt32(leerDatos.GetInt32(0));
-                                //mas.Fecha = Convert.ToDateTime(leerDatos.GetInt32(1));
-                                mas.Nombre = leerDatos.GetString(1);
-                                mas.Totalfactura = Convert.ToInt32(leerDatos.GetInt32(2));
-                                arreglo[inicio] = texto.Convertir(mas);
-                            }
-
-
-                        }
-
+                            Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
+                            Fecha = Convert.ToDateTime(leerDatos[1]),
+                            Nombre = leerDatos.GetString(2),
+                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3))
+                        }); ;
                     }
-
                 }
-                catch (Exception)
-                {
-                }
-                inicio++;
+                orden.Dispose();
+                conectar.Close();
+                return lst;
             }
-            while (inicio <= limite);
-            return arreglo;
+            catch (Exception)
+            {
+
+               return lst; 
+            }
+            
+            
         }
 
 
@@ -139,7 +128,7 @@ namespace WebServices.Controllers
                 SqlCommand orden = new SqlCommand();
                 conectar = new SqlConnection(Claveconexion);
                 SqlDataReader leerDatos;
-                String comando_baseDatos = " select factura, descripcion, precio, cantidad, subtotal from detallado where factura =" + indice;
+                String comando_baseDatos = "select factura, descripcion, precio, cantidad, subtotal from detallado where factura =" + indice;
 
                 orden.CommandType = CommandType.Text;
                 orden.CommandText = comando_baseDatos;
@@ -214,7 +203,7 @@ namespace WebServices.Controllers
                         tabla.Add(new Maestro //llena la tablaCategoría con la lectura
                         {
                             Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
-                            Fecha = Convert.ToDateTime(leerDatos[1]),
+                            Fecha =  Convert.ToDateTime(leerDatos[1]),
                             Nombre = leerDatos.GetString(2),
                             Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3)),
 
