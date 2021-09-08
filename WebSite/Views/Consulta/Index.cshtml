@@ -1,6 +1,7 @@
 ﻿@model WebSite.Models.Maestro
 @{
     ViewBag.Title = "Consulta";
+
 }
 <div class="jumbotron">
     <h1>Consulta de Maestro </h1>
@@ -16,15 +17,36 @@
     </p>
 </div>
 
-<div id="agregar">
-    <p>Esta es una prueba se puede seguir editando</p>
-    
-</div>
- 
-   
+@using (Html.BeginForm("Tabla", "Consulta", FormMethod.Get))
+{
+    <div id="agregar">
+        <p>Esta es una prueba se puede seguir editando</p>
+
+    </div>
+    <div class="row">
+        <div class="table table-bordered">
+            <table>
+                <tr>
+                    <td>Factura</td>
+                    <td>Fecha</td>
+                    <td>Cliente</td>
+                    <td>Total</td>
+                </tr>
+
+                <tr>
+                    @ViewBag.Message
+                    
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+}
 
 
 
-   
 
 

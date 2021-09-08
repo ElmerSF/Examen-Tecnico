@@ -12,32 +12,26 @@ namespace WebSite.Controllers
         // GET: Consulta
         public ActionResult Index()
         {
-            ConexionAPI conect = new ConexionAPI();
-
-            string parametro = "https://localhost:44333/api/Factura/5";
-            string metodo = "GET";
-            string resultado;
-            int numero = 5;
-            resultado = conect.Recibir(parametro, numero, metodo);
-            ViewBag.Message = resultado;
 
             return View();
-        }
 
-       // GET: Consulta/Tabla
-        public string Tabla()
+        }
+        [HttpGet]
+        public ActionResult Tabla()
         {
-            ConexionAPI conect = new ConexionAPI();
-        
+            
+            List<Maestro> list = new List<Maestro>();
+            string parametro = "https://localhost:44333/api/factura";
+            string metodo = "Get";
+            ConexionAPI conec = new ConexionAPI();
+            //list = conec.Recibir(parametro, metodo);
+            //ViewBag.Message = list;
+            ViewBag.Message = conec.Recibir(parametro, metodo);
+            return View("Index");
 
-            string parametro = "https://localhost:44333/api/Factura/5";
-            string metodo = "GET";
-            string resultado;
-            int numero = 5;
-            resultado = conect.Recibir(parametro, numero, metodo);
-            ViewBag.Message = resultado;
-            return resultado;
         }
+
+
 
     }
 }

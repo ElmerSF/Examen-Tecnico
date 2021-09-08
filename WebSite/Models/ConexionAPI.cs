@@ -1,6 +1,8 @@
 ﻿/*En esta clase es donde pasa la magia, cada una de las solicitudes se serializan y se obtiene un Json
  * esta agrupado por regiones para mayor facilidad
  * */
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +10,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace WebSite.Models
 {
@@ -61,17 +65,15 @@ namespace WebSite.Models
         #endregion
 
         #region obtener todas las facturas
-        public string Recibir(string parametro, int numero, string method = "GET")
+        public string Recibir(string parametro, string method = "GET")
         {
-            string resultado;
-
+            string json = "";
+            List<Maestro> lst = new List<Maestro>();
             try
             {
                 JavaScriptSerializer js = new JavaScriptSerializer();
 
-                //serializamos el objeto
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(numero);
-
+               
                 //peticion
                 WebRequest request = WebRequest.Create(parametro);
 
@@ -79,22 +81,25 @@ namespace WebSite.Models
                 request.ContentType = "application/json;charset=utf-8'";
 
                 var httpResponse = (HttpWebResponse)request.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                      
-                         
-                    resultado = streamReader.ReadToEnd().Trim();
-                }
+                var streamReader = new StreamReader(httpResponse.GetResponseStream());
+                    
+                
+                     json = streamReader.ReadToEnd().Trim();
+
+                //lst = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Maestro>>(json);
+
+               
 
             }
-            catch (Exception e)
+            catch 
             {
 
-                resultado = e.Message;
-
+                //return lst;
+                return json;
             }
 
-            return resultado;
+            //return lst;
+            return json;
         }
         #endregion
     }
