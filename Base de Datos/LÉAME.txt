@@ -1,0 +1,6 @@
+Para la utilización de la base de datos de debe realizar lo siguiente:
+1. Se debe ejecutar el Sript para creación de la base de datos con sus respectivas tablas e información 
+2. Se debe ingresar al Proyecto WebServices
+3. Ingresar a la carpeta Controllers
+4. Ingresar a la clase Funciones.
+5. cambiar la ruta de la base de datos, con la que corresponda
