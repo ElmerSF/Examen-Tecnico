@@ -28,6 +28,9 @@ namespace WebServices.Controllers
             Funciones Fun = new Funciones();
             List<Maestro> lst = new List<Maestro>();
             lst = Fun.TablaMaestro();
+
+
+
             return lst;
         }
 
@@ -48,7 +51,7 @@ namespace WebServices.Controllers
             Funciones Fun = new Funciones();
             Maestro maestro = new Maestro();
             maestro.Fatura = nuevo_maestro.Fatura;
-            maestro.Fecha = nuevo_maestro.Fecha;
+
             maestro.Nombre = nuevo_maestro.Nombre;
             maestro.Totalfactura = nuevo_maestro.Totalfactura;
             Fun.Guardar_factura(maestro);
@@ -66,7 +69,7 @@ namespace WebServices.Controllers
                 cambio.NombreNuevo = registro.NombreNuevo;
                 cambio.IDfactura = registro.IDfactura;
                 string mensaje_accion;
-                mensaje_accion= Fun.Cambiar_cliente(cambio);
+                mensaje_accion = Fun.Cambiar_cliente(cambio);
                 return Ok(mensaje_accion);
             }
             else

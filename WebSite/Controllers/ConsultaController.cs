@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WebSite.Models;
 
@@ -19,15 +16,27 @@ namespace WebSite.Controllers
         [HttpGet]
         public ActionResult Tabla()
         {
-            
-            List<Maestro> list = new List<Maestro>();
-            string parametro = "https://localhost:44333/api/factura";
-            string metodo = "Get";
-            ConexionAPI conec = new ConexionAPI();
-            //list = conec.Recibir(parametro, metodo);
-            //ViewBag.Message = list;
-            ViewBag.Message = conec.Recibir(parametro, metodo);
+            try
+            {
+                List<Maestro> list = new List<Maestro>();
+                string parametro = "https://localhost:44333/api/factura";
+                string metodo = "Get";
+                ConexionAPI conec = new ConexionAPI();
+                string tab = conec.Recibir(parametro, metodo);
+                ViewBag.Message = tab;
+
+            }
+            catch
+            {
+
+
+            }
+
             return View("Index");
+
+
+            //ViewBag.Message = conec.Recibir(parametro, metodo);
+
 
         }
 

@@ -66,7 +66,7 @@ namespace WebServices.Controllers
 
         #region Mostrar todas las facturas Maestro
         public List<Maestro> TablaMaestro() //se envia consulta para obtner todas las facturas
-         {
+        {
             List<Maestro> lst = new List<Maestro>();
             try
             {
@@ -75,16 +75,16 @@ namespace WebServices.Controllers
                 conectar = new SqlConnection(claveconexion); //le pasamos la ruta 
                 SqlDataReader leerDatos; // variable para lectura
                                          //cadena coon el comnando para la base de datos
-                String comando_baseDatos = "select id_factura, fecha, nombre, total from Factura";
+                String comando_baseDatos = "select id_factura, nombre, total from Factura";
 
                 //definir los parametros y ejecucion a la base datos
                 orden.CommandType = CommandType.Text;
                 orden.CommandText = comando_baseDatos;
                 orden.Connection = conectar;
                 conectar.Open();
-                
+
                 leerDatos = orden.ExecuteReader(); // datos que devuelve la consulta en base datos
-                
+
 
                 if (leerDatos.HasRows)
                 {
@@ -93,9 +93,9 @@ namespace WebServices.Controllers
                         lst.Add(new Maestro //llena la tablaCategoría con la lectura
                         {
                             Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
-                            Fecha = Convert.ToDateTime(leerDatos[1]),
-                            Nombre = leerDatos.GetString(2),
-                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3))
+
+                            Nombre = leerDatos.GetString(1),
+                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(2))
                         }); ;
                     }
                 }
@@ -106,10 +106,10 @@ namespace WebServices.Controllers
             catch (Exception)
             {
 
-               return lst; 
+                return lst;
             }
-            
-            
+
+
         }
 
 
@@ -187,7 +187,7 @@ namespace WebServices.Controllers
                 SqlDataReader leerDatos;
 
                 //se le envia la seleccion a la base de datos ingresando el parametro de índice
-                String comando_baseDatos = "select id_factura, fecha, nombre, total from Factura where id_factura = " + indice;
+                String comando_baseDatos = "select id_factura, nombre, total from Factura where id_factura = " + indice;
 
                 orden.CommandType = CommandType.Text;
                 orden.CommandText = comando_baseDatos;
@@ -203,9 +203,9 @@ namespace WebServices.Controllers
                         tabla.Add(new Maestro //llena la tablaCategoría con la lectura
                         {
                             Fatura = Convert.ToInt32(leerDatos.GetInt32(0)),
-                            Fecha =  Convert.ToDateTime(leerDatos[1]),
-                            Nombre = leerDatos.GetString(2),
-                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(3)),
+
+                            Nombre = leerDatos.GetString(1),
+                            Totalfactura = Convert.ToInt32(leerDatos.GetInt32(2)),
 
                         }); ;
 
@@ -283,7 +283,7 @@ namespace WebServices.Controllers
             try
             {
                 //se envia el parametro a la base de datos
-                String parametro = "insert into Factura (nombre, fecha, total) values (@nombre, @fecha, @total)";
+                String parametro = "insert into Factura (nombre, fecha, total) values (@nombre, GETDATE(), @total)";
                 SqlConnection conectar;
                 SqlCommand orden = new SqlCommand();
                 conectar = new SqlConnection(claveconexion);
@@ -295,7 +295,7 @@ namespace WebServices.Controllers
 
                 //parametrizacion de los datos hacia la base de datos
                 orden.Parameters.AddWithValue("@nombre", nuevo_maestro.Nombre);
-                orden.Parameters.AddWithValue("@fecha", nuevo_maestro.Fecha);
+
                 orden.Parameters.AddWithValue("@total", nuevo_maestro.Totalfactura);
 
                 confirmacion = orden.ExecuteNonQuery() > 0;

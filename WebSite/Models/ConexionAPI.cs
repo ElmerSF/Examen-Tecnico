@@ -3,15 +3,12 @@
  * */
 
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Script.Serialization;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace WebSite.Models
 {
@@ -36,7 +33,7 @@ namespace WebSite.Models
 
                 request.Method = method;
                 request.ContentType = "application/json;charset=utf-8'";
-                
+
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
@@ -50,7 +47,7 @@ namespace WebSite.Models
                 {
                     resultado = streamReader.ReadToEnd().Trim();
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -67,13 +64,12 @@ namespace WebSite.Models
         #region obtener todas las facturas
         public string Recibir(string parametro, string method = "GET")
         {
-            string json = "";
-            List<Maestro> lst = new List<Maestro>();
+            List<Maestro> list = new List<Maestro>();
+            string respuesta ="";
             try
             {
                 JavaScriptSerializer js = new JavaScriptSerializer();
 
-               
                 //peticion
                 WebRequest request = WebRequest.Create(parametro);
 
@@ -82,25 +78,24 @@ namespace WebSite.Models
 
                 var httpResponse = (HttpWebResponse)request.GetResponse();
                 var streamReader = new StreamReader(httpResponse.GetResponseStream());
-                    
+
+                string json = streamReader.ReadToEnd().Trim();
                 
-                     json = streamReader.ReadToEnd().Trim();
-
-                //lst = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Maestro>>(json);
-
-               
-
+                list = JsonConvert.DeserializeObject<List<Maestro>>(json);
+                respuesta = json;
             }
-            catch 
+            catch
             {
 
-                //return lst;
-                return json;
+                return respuesta;
+
             }
 
-            //return lst;
-            return json;
+            return respuesta;
+
         }
         #endregion
+
+
     }
 }
