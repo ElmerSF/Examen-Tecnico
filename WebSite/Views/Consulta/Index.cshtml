@@ -9,9 +9,9 @@
     <p>Al presionar Mostar Tabla Se muestran todas las facturas</p>
     <p>
 
-        <a id="consulta" href="https://localhost:44335/Consulta/Tabla" class="btn btn-primary btn-lg">Mostrar Tabla Maestro &raquo;</a>
-        <a id="consulta" href="./Modifica" class="btn btn-primary btn-lg">Modificacion Maestro &raquo;</a>
-        <a id="consulta" href="./Detalle" class="btn btn-primary btn-lg">Consultar Detalle &raquo;</a>
+        <a id="consulta" href="../Consulta/Tabla" class="btn btn-primary btn-lg">Mostrar Tabla Maestro &raquo;</a>
+        <a id="consulta" href="../Modifica" class="btn btn-primary btn-lg">Modificacion Maestro &raquo;</a>
+        <a id="consulta" href="../Detalle" class="btn btn-primary btn-lg">Consultar Detalle &raquo;</a>
 
 
     </p>
@@ -20,7 +20,7 @@
 @using (Html.BeginForm("Tabla", "Consulta", FormMethod.Get))
 {
     <div id="agregar">
-        <p>Esta es una prueba se puede seguir editando</p>
+        <p>Aqui aparecen las facturas</p>
 
     </div>
     <div class="row">
@@ -32,10 +32,10 @@
                     <th>Cliente</th>
                     <th>Total</th>
                 </tr>
-                </table>
-              
-                        @ViewBag.Message
-                    
+            </table>
+
+            @ViewBag.Message
+
         </div>
 
     </div>

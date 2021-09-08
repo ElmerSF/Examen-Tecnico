@@ -24,23 +24,18 @@ namespace WebSite.Controllers
         {
             try
             {
-
                 ConexionAPI coman = new ConexionAPI();
 
                 //parametro de la API que vamos a utilizar del proyecto Webservices
                 string direccion = "https://localhost:44333/api/Factura?confirma=true";
-
                 string mensaje;
-
                 //le mandamos el paquete a serializar
                 mensaje = coman.Send<CambioMaestro>(direccion, encabezado, "POST");
 
                 //este mensaje proviene de la consulta realizada a la base de datos
                 ViewBag.Message = mensaje;
-
                 //se mantiene en esta vista
                 return View("Index");
-
             }
             catch
             {

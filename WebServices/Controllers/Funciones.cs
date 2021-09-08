@@ -15,7 +15,7 @@ namespace WebServices.Controllers
     public class Funciones
     {
         //ruta de conexión a la base de datos 
-        private string claveconexion = "Data Source=SILVER-365\\ELMERSERVER;Initial Catalog=MaestroDetalle;Integrated Security = True;Current Language=Spanish; pooling=true;min pool size=5;max pool size=250;";
+        private readonly string claveconexion = "Data Source=SILVER-365\\ELMERSERVER;Initial Catalog=MaestroDetalle;Integrated Security = True;Current Language=Spanish; pooling=true;min pool size=5;max pool size=250;";
 
         public string Claveconexion { get => claveconexion; }
 

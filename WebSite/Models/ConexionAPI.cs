@@ -65,36 +65,32 @@ namespace WebSite.Models
         public string Recibir(string parametro, string method = "GET")
         {
             List<Maestro> list = new List<Maestro>();
-            string respuesta ="";
+            string respuesta = "";
             try
             {
-                JavaScriptSerializer js = new JavaScriptSerializer();
-
                 //peticion
                 WebRequest request = WebRequest.Create(parametro);
 
                 request.Method = method;
-                request.ContentType = "application/json;charset=utf-8'";
+                request.ContentType = "application/json;charset=utf-8'"; //estructura de la consulta
 
                 var httpResponse = (HttpWebResponse)request.GetResponse();
                 var streamReader = new StreamReader(httpResponse.GetResponseStream());
 
                 string json = streamReader.ReadToEnd().Trim();
-                
-                list = JsonConvert.DeserializeObject<List<Maestro>>(json);
+
+                list = JsonConvert.DeserializeObject<List<Maestro>>(json); //deserealización a lista de Maestro
                 respuesta = json;
             }
             catch
             {
-
                 return respuesta;
-
             }
-
             return respuesta;
-
         }
         #endregion
+
+
 
 
     }

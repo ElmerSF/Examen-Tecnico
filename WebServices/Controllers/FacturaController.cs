@@ -28,9 +28,6 @@ namespace WebServices.Controllers
             Funciones Fun = new Funciones();
             List<Maestro> lst = new List<Maestro>();
             lst = Fun.TablaMaestro();
-
-
-
             return lst;
         }
 
