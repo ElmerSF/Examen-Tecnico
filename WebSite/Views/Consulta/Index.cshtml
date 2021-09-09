@@ -1,6 +1,8 @@
 ﻿@model WebSite.Models.Maestro
+   
 @{
     ViewBag.Title = "Consulta";
+ 
 
 }
 <div class="jumbotron">
@@ -28,13 +30,46 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Factura</th>
-                    <th>Fecha</th>
+                    
                     <th>Cliente</th>
                     <th>Total</th>
                 </tr>
-            </table>
 
-            @ViewBag.Message
+                <tr >
+
+                    <td >
+                        @foreach (string facturas in ViewBag.fact)
+                        {
+                            <ul class="table-bordered">
+                                @facturas
+                            </ul>
+                        }
+                        </td>
+
+                    <td>
+                        @foreach (string nombres in ViewBag.nom)
+                        {
+                            <ul class="table-bordered">
+                                @nombres
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        @foreach (string totales in ViewBag.tot)
+                        {
+                            <ul class="table-bordered">
+                                @totales
+                            </ul>
+                        }
+                    </td>
+
+
+
+
+                </tr>
+
+            </table>
+            
 
         </div>
 

@@ -3,6 +3,9 @@
  * 
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace WebSite.Models
 {
     public class EntidadesBasedeDatos //estos son las columnas de la tabla Maestro de la Base de Datos
@@ -24,5 +27,14 @@ namespace WebSite.Models
     {
         public string NombreNuevo { get; set; }
         public int IDfactura { get; set; }
+    }
+    public class Tabla
+    {
+        public List<Maestro> Listado { get; set; }
+
+        public static implicit operator Tabla(List<Maestro> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

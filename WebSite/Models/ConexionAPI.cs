@@ -91,6 +91,35 @@ namespace WebSite.Models
         #endregion
 
 
+        #region obtener las facturas completas
+        public List<Maestro> obtener(string parametro, string method = "GET")
+        {
+            List<Maestro> list = new List<Maestro>();
+            string respuesta = "";
+            try
+            {
+                //peticion
+                WebRequest request = WebRequest.Create(parametro);
+
+                request.Method = method;
+                request.ContentType = "application/json;charset=utf-8'"; //estructura de la consulta
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                var streamReader = new StreamReader(httpResponse.GetResponseStream());
+
+                string json = streamReader.ReadToEnd().Trim();
+
+                list = JsonConvert.DeserializeObject<List<Maestro>>(json); //deserealización a lista de Maestro
+                respuesta = json;
+            }
+            catch
+            {
+                return list;
+            }
+            return list;
+        }
+        #endregion
+
 
 
     }
