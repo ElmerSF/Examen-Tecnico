@@ -26,7 +26,7 @@ namespace WebSite.Models
                 JavaScriptSerializer js = new JavaScriptSerializer();
 
                 //serializamos el objeto
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(entidad);
+                string json = JsonConvert.SerializeObject(entidad);
 
                 //peticion
                 WebRequest request = WebRequest.Create(parametro);
@@ -127,31 +127,18 @@ namespace WebSite.Models
 
             try
             {
-                JavaScriptSerializer js = new JavaScriptSerializer();
-
-                //serializamos el objeto
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(entidad);
-
                 //peticion
                 WebRequest request = WebRequest.Create(parametro);
 
                 request.Method = method;
-                request.ContentType = "application/json;charset=utf-8'";
-
-
-                var streamWriter = new StreamWriter(request.GetRequestStream());
-                
-                    streamWriter.Write(json);
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                
+                request.ContentType = "application/json;charset=utf-8'"; //estructura de la consulta
 
                 var httpResponse = (HttpWebResponse)request.GetResponse();
                 var streamReader = new StreamReader(httpResponse.GetResponseStream());
-                
-                    string jsonrespuesta = streamReader.ReadToEnd().Trim();
-                
-                lst = JsonConvert.DeserializeObject<List<EntidadesBasedeDatos>>(jsonrespuesta);
+
+                string json = streamReader.ReadToEnd().Trim();
+
+                lst = JsonConvert.DeserializeObject<List<EntidadesBasedeDatos>>(json);
 
             }
             catch 

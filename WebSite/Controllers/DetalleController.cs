@@ -6,6 +6,7 @@ namespace WebSite.Controllers
 {
     public class DetalleController : Controller
     {
+
         // GET: Detalle
         public ActionResult Index()
         {
@@ -25,7 +26,7 @@ namespace WebSite.Controllers
         }
 
         // GET: Detalle/Create
-        public ActionResult ObtenerDetalles (EntidadesBasedeDatos encabezado)
+        public ActionResult ObtenerDetalles(EntidadesBasedeDatos encabezado)
         {
             List<EntidadesBasedeDatos> list = new List<EntidadesBasedeDatos>();
             ViewBag.fac = "";
@@ -38,7 +39,7 @@ namespace WebSite.Controllers
                 ConexionAPI coman = new ConexionAPI();
 
                 //parametro de la API que vamos a utilizar del proyecto Webservices
-                string direccion = "https://localhost:44333/api/Detalle?confirma=true";
+                string direccion =  "https://localhost:44333/api/Detalle/" + encabezado.Nofactura;
                 string mensaje;
                 //le mandamos el paquete a serializar
                 list = coman.ListarDetalles<EntidadesBasedeDatos>(direccion, encabezado, "GET");
@@ -81,8 +82,13 @@ namespace WebSite.Controllers
 
         // POST: Detalle/Create
         [HttpPost]
-        public ActionResult Create(EntidadesBasedeDatos cuerpo)
+        public ActionResult Eliminar(EntidadesBasedeDatos cuerpo)
         {
+            ViewBag.fac = "";
+            ViewBag.det = "";
+            ViewBag.can = "";
+            ViewBag.pre = "";
+            ViewBag.sub = "";
             try
             {
                 ConexionAPI coman = new ConexionAPI();
@@ -94,7 +100,7 @@ namespace WebSite.Controllers
                 mensaje = coman.Send<EntidadesBasedeDatos>(direccion, cuerpo, "POST");
 
                 //este mensaje proviene de la consulta realizada a la base de datos
-                ViewBag.Message = mensaje;
+                ViewBag.aviso = mensaje;
                 //se mantiene en esta vista
                 return View("Index");
             }
@@ -119,7 +125,7 @@ namespace WebSite.Controllers
                 //le mandamos el paquete a serializar
                  string mensaje = coman.Recibir(direccion, "GET");
                 //este mensaje proviene de la consulta realizada a la base de datos
-                ViewBag.Message = mensaje;
+                ViewBag.Message2 = mensaje;
                 //se mantiene en esta vista
                 return View("Index");
             }
