@@ -9,15 +9,72 @@
     <p>
         <a id="consulta" href="../Consulta" class="btn btn-primary btn-lg">Regresar a Consulta Maestro &raquo;</a>
         <a id="Borra" href="" class="btn btn-primary btn-lg">Borrar linea de detalle &raquo;</a>
-
-
     </p>
 </div>
+
 <div>
     <h2>Consulte los detalles de una factura</h2>
     <p>Ingrese el número de factura y podra ver los detales de la misma</p>
 </div>
-@using (Html.BeginForm("Edit", "Detalle", FormMethod.Get))
+@using (Html.BeginForm("ObtenerDetalles", "Detalle", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Factura Numero:</th>
+                    <th>Descripción:</th>
+                    <th>Precio:</th>
+                    <th>Cantidad:</th>
+                    <th>Subtotal:</th>
+                </tr>
+                <tr>
+                    <td>
+                        @foreach (string facturas in ViewBag.fac)
+                        {
+                            <ul class="table-bordered">
+                                @facturas
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        @foreach (string des in ViewBag.det)
+                        {
+                            <ul class="table-bordered">
+                                @des
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        @foreach (string precio in ViewBag.pre)
+                        {
+                            <ul class="table-bordered">
+                                @precio
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        @foreach (string cantidad in ViewBag.can)
+                        {
+                            <ul class="table-bordered">
+                                @cantidad
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        @foreach (string subtotal in ViewBag.sub)
+                        {
+                            <ul class="table-bordered">
+                                @subtotal
+                            </ul>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("ObtenerDetalles", "Detalle", FormMethod.Get))
 {
     <div class="row">
         <div class="form-group">
@@ -29,7 +86,7 @@
 
         </div>
         <div class="alert-info">
-            @ViewBag.Message
+          
         </div>
 
     </div>
@@ -63,7 +120,6 @@
             //var confirma = prompt('Se eliminará de manera permanente', 'lo otro');
             var resultado = window.confirm('Se eliminará de manera permanente el registro');
             if (resultado === true) {
-
             } else {
                 window.alert('No se eliminará');
             }

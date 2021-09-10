@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using WebSite.Models;
+using System.Collections.Generic;
 
 namespace WebSite.Controllers
 {
@@ -8,6 +9,12 @@ namespace WebSite.Controllers
         // GET: Detalle
         public ActionResult Index()
         {
+            ViewBag.fac = "";
+            ViewBag.det = "";
+            ViewBag.can = "";
+            ViewBag.pre = "";
+            ViewBag.sub = "";
+
             return View();
         }
 
@@ -18,8 +25,14 @@ namespace WebSite.Controllers
         }
 
         // GET: Detalle/Create
-        public ActionResult Elimina(EntidadesBasedeDatos encabezado)
+        public ActionResult ObtenerDetalles (EntidadesBasedeDatos encabezado)
         {
+            List<EntidadesBasedeDatos> list = new List<EntidadesBasedeDatos>();
+            ViewBag.fac = "";
+            ViewBag.det = "";
+            ViewBag.can = "";
+            ViewBag.pre = "";
+            ViewBag.sub = "";
             try
             {
                 ConexionAPI coman = new ConexionAPI();
@@ -28,10 +41,34 @@ namespace WebSite.Controllers
                 string direccion = "https://localhost:44333/api/Detalle?confirma=true";
                 string mensaje;
                 //le mandamos el paquete a serializar
-                mensaje = coman.Send<EntidadesBasedeDatos>(direccion, encabezado, "POST");
-
+                list = coman.ListarDetalles<EntidadesBasedeDatos>(direccion, encabezado, "GET");
                 //este mensaje proviene de la consulta realizada a la base de datos
-                ViewBag.Message2 = mensaje;
+
+                List<string> factura = new List<string>();
+                List<string> detalle = new List<string>();
+                List<string> cantidad = new List<string>();
+                List<string> precio = new List<string>();
+                List<string> subtotal = new List<string>();
+
+                if (list.Count>0 || list !=null)
+                {
+                    foreach (var item in list)
+                    {
+                        factura.Add(item.Nofactura + "");
+                        detalle.Add(item.Detalleproducto + "");
+                        cantidad.Add(item.Cantidad + "");
+                        precio.Add(item.Precio + "");
+                        subtotal.Add(item.Subtotal + "");
+                    }
+
+                    ViewBag.fac = factura;
+                    ViewBag.det = detalle;
+                    ViewBag.can = cantidad;
+                    ViewBag.pre = precio;
+                    ViewBag.sub = subtotal;
+                }
+                
+               
                 //se mantiene en esta vista
                 return View("Index");
             }
@@ -70,15 +107,17 @@ namespace WebSite.Controllers
         // GET: Detalle/Edit/5
         public ActionResult Edit(EntidadesBasedeDatos ent)
         {
+            
             try
             {
                 ConexionAPI coman = new ConexionAPI();
-                //EntidadesBasedeDatos ent = new EntidadesBasedeDatos();
+                
                 //parametro de la API que vamos a utilizar del proyecto Webservices
                 string direccion = "https://localhost:44333/api/Detalle/" + ent.Nofactura;
-                string mensaje;
+               
+
                 //le mandamos el paquete a serializar
-                mensaje = coman.Recibir(direccion, "GET");
+                 string mensaje = coman.Recibir(direccion, "GET");
                 //este mensaje proviene de la consulta realizada a la base de datos
                 ViewBag.Message = mensaje;
                 //se mantiene en esta vista
@@ -92,42 +131,7 @@ namespace WebSite.Controllers
 
         }
 
-        // POST: Detalle/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Detalle/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Detalle/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

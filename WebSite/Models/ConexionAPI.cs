@@ -95,7 +95,7 @@ namespace WebSite.Models
         public List<Maestro> obtener(string parametro, string method = "GET")
         {
             List<Maestro> list = new List<Maestro>();
-            string respuesta = "";
+           
             try
             {
                 //peticion
@@ -110,7 +110,7 @@ namespace WebSite.Models
                 string json = streamReader.ReadToEnd().Trim();
 
                 list = JsonConvert.DeserializeObject<List<Maestro>>(json); //deserealización a lista de Maestro
-                respuesta = json;
+                
             }
             catch
             {
@@ -118,6 +118,54 @@ namespace WebSite.Models
             }
             return list;
         }
+        #endregion
+
+        #region ver los detalles de una factura en particular
+        public List<EntidadesBasedeDatos> ListarDetalles<aserializar>(string parametro, aserializar entidad, string method = "GET")
+        {
+            List<EntidadesBasedeDatos> lst = new List<EntidadesBasedeDatos>();
+
+            try
+            {
+                JavaScriptSerializer js = new JavaScriptSerializer();
+
+                //serializamos el objeto
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(entidad);
+
+                //peticion
+                WebRequest request = WebRequest.Create(parametro);
+
+                request.Method = method;
+                request.ContentType = "application/json;charset=utf-8'";
+
+
+                var streamWriter = new StreamWriter(request.GetRequestStream());
+                
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                var streamReader = new StreamReader(httpResponse.GetResponseStream());
+                
+                    string jsonrespuesta = streamReader.ReadToEnd().Trim();
+                
+                lst = JsonConvert.DeserializeObject<List<EntidadesBasedeDatos>>(jsonrespuesta);
+
+            }
+            catch 
+            {
+
+                return lst;
+
+            }
+
+            return lst;
+        }
+
+
+
         #endregion
 
 

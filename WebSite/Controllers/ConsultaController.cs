@@ -14,6 +14,9 @@ namespace WebSite.Controllers
             ViewBag.fact = "";
             ViewBag.nom = "";
             ViewBag.tot = "";
+            ViewBag.f = "";
+            ViewBag.n = "";
+            ViewBag.t = "";
             return View();
         }
         [HttpGet]
@@ -37,8 +40,10 @@ namespace WebSite.Controllers
                     nombres.Add(item.Nombre + "");
                     totales.Add(item.Totalfactura + "");
                 }
+                ViewBag.f = "Factura Numero:";
+                ViewBag.n = "Nombre:";
+                ViewBag.t = "total:";
 
-                
 
                 ViewBag.fact = facturas;
                 ViewBag.nom = nombres;
