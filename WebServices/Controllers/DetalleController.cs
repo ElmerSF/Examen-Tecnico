@@ -1,5 +1,5 @@
 ﻿/*
-Con esta API vamos a manejar los Detalles de la factura
+Con esta API vamos a manejar los Detalles de la FACTURA
 */
 using System;
 using System.Collections.Generic;
